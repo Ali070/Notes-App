@@ -98,8 +98,7 @@ class NotesAdapter(val notesList: ArrayList<Note>, private val myViewModel: Home
             }else if (difference in 3600000..86400000){
                 binding.dateTv.text = "${(difference/3600000).toString()} Hour"
             }else{
-                val format = SimpleDateFormat("yyyy-mm-dd",Locale.getDefault())
-                binding.dateTv.text = format.format(note.Date)
+                binding.dateTv.text = note.Day
             }
 
             if(selectAll){

@@ -37,6 +37,7 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
                   }
 
                   override fun onError(e: Throwable) {
+                      Log.e("TAG", "$e")
                   }
 
 

@@ -14,5 +14,7 @@ data class Note(
     @ColumnInfo(name = "Description")
     val Description:String,
     @ColumnInfo(name = "Date")
-    val Date:Long
+    val Date:Long,
+    @ColumnInfo(name = "Day")
+    val Day:String
 )

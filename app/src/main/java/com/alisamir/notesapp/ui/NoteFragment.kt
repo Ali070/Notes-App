@@ -12,6 +12,7 @@ import com.alisamir.notesapp.R
 import com.alisamir.notesapp.databinding.FragmentNewNoteBinding
 import com.alisamir.notesapp.databinding.FragmentNoteBinding
 import com.alisamir.notesapp.pojo.Note
+import java.text.SimpleDateFormat
 import java.util.*
 
 class NoteFragment : Fragment() {
@@ -43,12 +44,14 @@ class NoteFragment : Fragment() {
     }
     fun save(){
         if(title!=null && description!=null) {
+            val format = SimpleDateFormat("y-M-d",Locale.getDefault())
             myViewModel.updateNote(
                 Note(
                     0,
                     title!!,
                     description!!,
-                    Calendar.getInstance().timeInMillis
+                    Calendar.getInstance().timeInMillis,
+                    format.format(Calendar.getInstance().time)
                 )
             )
             Log.d("TAG", "save: ")

@@ -14,8 +14,17 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    sourceSets {
+        getByName("androidTest") {
+            assets.srcDirs(files(projectDir, "schemas"))
+        }
     }
 
     buildTypes {
@@ -35,6 +44,7 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
 }
 
 dependencies {
@@ -46,7 +56,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1"
-    def room_version = "2.3.0"
+    def room_version = "2.4.0"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     kapt"androidx.room:room-compiler:$room_version"

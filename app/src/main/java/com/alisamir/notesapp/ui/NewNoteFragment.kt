@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.alisamir.notesapp.R
 import com.alisamir.notesapp.databinding.FragmentNewNoteBinding
 import com.alisamir.notesapp.pojo.Note
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -67,11 +68,12 @@ class NewNoteFragment : Fragment() {
     }
     private fun checkTitleAndDesc(): Note? {
         var note:Note? = null
+        val format = SimpleDateFormat("y-M-d",Locale.getDefault())
         if(binding.noteET.text.isNotEmpty()){
             note = if(binding.titleET.text.isEmpty()){
-                Note(0,"No Title",binding.noteET.text.toString(),Calendar.getInstance().timeInMillis)
+                Note(0,"No Title",binding.noteET.text.toString(),Calendar.getInstance().timeInMillis,format.format(Calendar.getInstance().time))
             }else{
-                Note(0,binding.titleET.text.toString(),binding.noteET.text.toString(),Calendar.getInstance().timeInMillis)
+                Note(0,binding.titleET.text.toString(),binding.noteET.text.toString(),Calendar.getInstance().timeInMillis,format.format(Calendar.getInstance().time))
             }
         }
         return note
