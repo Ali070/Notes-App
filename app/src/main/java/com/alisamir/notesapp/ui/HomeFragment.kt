@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -55,18 +56,20 @@ class HomeFragment : Fragment() {
         Log.e(TAG, "data: "+formatter.format(calender.time) )
         calender.add(Calendar.DATE,1)
         Log.e(TAG, "data2: "+calender.timeInMillis )*/
-        myViewModel.myData.observe(viewLifecycleOwner,{
+        myViewModel.myData.observe(viewLifecycleOwner) {
             Log.d(TAG, "Observe ")
             Log.d(TAG, "onViewCreated: $it")
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 noItemsView.visibility = View.VISIBLE
-            }else{
+            } else {
                 noItemsView.visibility = View.GONE
-                val adapter = NotesAdapter(it as ArrayList<Note>,myViewModel,binding.searchView)
+                val adapter = NotesAdapter(it as ArrayList<Note>, myViewModel, binding.searchView)
                 binding.notesList.adapter = adapter
-                binding.notesList.layoutManager = LinearLayoutManager( context)
+                binding.notesList.layoutManager = LinearLayoutManager(context)
+                binding.notesList.layoutAnimation = AnimationUtils.loadLayoutAnimation(context,R.anim.list_anim)
+                binding.notesList.scheduleLayoutAnimation()
                 binding.searchView.imeOptions = EditorInfo.IME_ACTION_DONE
-                binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(p0: String?): Boolean {
                         return false
                     }
@@ -77,16 +80,16 @@ class HomeFragment : Fragment() {
                     }
 
                 })
-                adapter.setOnItemClickListener(object:NotesAdapter.onItemClickListener{
+                adapter.setOnItemClickListener(object : NotesAdapter.onItemClickListener {
                     override fun onClick(note: Note) {
-                        goToNote(note.Title,note.Description)
+                        goToNote(note.Title, note.Description)
                     }
 
                 })
 
             }
 
-        })
+        }
 
     }
     fun goToNewNote(){

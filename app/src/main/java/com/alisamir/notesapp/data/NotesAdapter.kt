@@ -6,6 +6,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -118,11 +121,18 @@ class NotesAdapter(val notesList: ArrayList<Note>, private val myViewModel: Home
                 }
             }
             binding.root.setOnClickListener {
+                val inanimation = AnimationUtils.loadAnimation(it.context,R.anim.in_anim)
+                val outanimation = AnimationUtils.loadAnimation(it.context,R.anim.out_anim)
+                val animationSet = AnimationSet(true)
+
+                animationSet.addAnimation(inanimation)
+                animationSet.addAnimation(outanimation)
                 if(!isEnable){
                    val position = adapterPosition
                    listener.onClick(note)
                }else{
                    if(binding.checkBox.isChecked){
+
                        binding.checkBox.isChecked = false
                        selected.remove(note)
                        Log.e("TAG", "false: $selected" )
@@ -130,6 +140,21 @@ class NotesAdapter(val notesList: ArrayList<Note>, private val myViewModel: Home
                        mActionMode?.title = it.context.getString(R.string.actionTitle,selected.size)
                        binding.itemBack.setBackgroundResource(R.drawable.note_item_back)
                    }else{
+                       inanimation.setAnimationListener(object: Animation.AnimationListener{
+                           override fun onAnimationStart(p0: Animation?) {
+
+                           }
+
+                           override fun onAnimationEnd(p0: Animation?) {
+                               it.startAnimation(outanimation)
+                           }
+
+                           override fun onAnimationRepeat(p0: Animation?) {
+                           }
+
+                       })
+
+                       it.startAnimation(inanimation)
                        binding.checkBox.isChecked = true
                        selected.add(note)
                        mActionMode?.title = it.context.getString(R.string.actionTitle,selected.size)
