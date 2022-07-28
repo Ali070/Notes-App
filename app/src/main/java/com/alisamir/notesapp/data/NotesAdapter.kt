@@ -16,6 +16,8 @@ import com.alisamir.notesapp.R
 import com.alisamir.notesapp.databinding.NoteItemBinding
 import com.alisamir.notesapp.pojo.Note
 import com.alisamir.notesapp.ui.HomeViewModel
+import org.ocpsoft.prettytime.PrettyTime
+import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -92,9 +94,12 @@ class NotesAdapter(val notesList: ArrayList<Note>, private val myViewModel: Home
         fun bind(note: Note, mActionMode: ActionMode?,actionCallback:ActionMode.Callback,isEnable:Boolean,selected:ArrayList<Note>,selectAll:Boolean,isSearch:Boolean) {
             Log.d("TAG", "binding ")
             binding.titleTv.text = note.Title
+            val prettyTime = PrettyTime()
+            val time = prettyTime.format(Date(note.Date))
             val calendar = Calendar.getInstance()
             val difference = calendar.timeInMillis - note.Date
-            if(difference < 60000){
+            binding.dateTv.text = time
+            /*if(difference < 60000){
                 binding.dateTv.text = "Just now"
             }else if (difference in 60000..3600000){
                 binding.dateTv.text = "${(difference/60000).toString()} Minute"
@@ -102,7 +107,7 @@ class NotesAdapter(val notesList: ArrayList<Note>, private val myViewModel: Home
                 binding.dateTv.text = "${(difference/3600000).toString()} Hour"
             }else{
                 binding.dateTv.text = note.Day
-            }
+            }*/
 
             if(selectAll){
                 binding.checkLayout.visibility = View.VISIBLE
